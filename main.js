@@ -153,6 +153,11 @@ const renderProjects = (array) =>{
   renderToDom("#display-body", reference)
 }
 
+const repoHTML = (repos = user.repositories) => {
+  let htmlString = ""
+
+}
+
 //function for Overview display currently all placeholder 
 const renderOverview = (item) =>{
 let reference = ""
@@ -170,8 +175,20 @@ reference += `<div id ="display-body" class="card">
 })
 renderToDom("#display-body", reference)
 }
-renderOverview(deleteMe)
+const startUp = () => {
+  if (window.location.href.includes("index.html")) {
+    renderOverview(deleteMe)
+  } else if (window.location.href.includes("repos.html")) {
+
+  } else if (window.location.href.includes("projects.html")) {
+    renderProjects(user.projects)
+  } else if (window.location.href.includes("packages.html")) {
+
+  }
+}
 
 //selectors to flip displayed page
-document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
-document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
+// document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
+// document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
+
+startUp()
