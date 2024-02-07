@@ -13,7 +13,23 @@ user = {
     id: 1,
     name: "",
   }],
-  projects: [],
+  projects: [
+    {
+    id: 1,
+    name:"oh, Geez",
+    description: "I don't know what I'm doing."
+  },
+   {
+    id: 2,
+    name:"Panic inducing.",
+    description: "I can't get this to work."
+   },
+   {
+    id: 3,
+    name:"Last Project",
+    description: "If this doesn't work I quit."
+   }
+  ],
   packages: [{
     id: 1,
     name: "Docker",
@@ -50,5 +66,4 @@ user = {
     description: "A single place for your team to manage Docker images and decide who can see and access your images.",
     learnUrl: "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
   }],
-  
 }
