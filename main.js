@@ -67,3 +67,64 @@ user = {
     learnUrl: "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
   }],
 }
+
+const deleteMe =[{name:"To be changed later"}]
+
+//utility function
+const renderToDom = (divId, html) =>{
+  const selectedDiv = document.querySelector(divId)
+  selectedDiv.innerHTML = html
+}
+
+//function to display projects "page"
+const renderProjects = (array) =>{
+  let reference = ""
+  array.forEach((element) => {
+    reference += `<div id="display-body" class="card">
+    <div class="card-header">
+      Featured
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Delete</a>
+    </div>
+  </div>`
+
+  const projectCreator = () =>{
+    const display =
+    `<form id="submit-form">
+  <h5>Create a new Project</h5>
+    <input type="text" class="form-name" id="name" placeholder="Name" required>
+    <input type ="text" class="form-description" placeholder="Description">
+    <button type="submit" class="btn" id="submit-btn">Create</button>
+  </form>`
+  return display
+  }  
+  renderToDom("#submit-form",projectCreator())
+  });
+  renderToDom("#display-body", reference)
+}
+
+//function for Overview display currently all placeholder 
+const renderOverview = (item) =>{
+let reference = ""
+item.forEach((item) =>{
+reference += `<div id ="display-body" class="card">
+<div class="card-header">
+  Pinned Repos
+</div>
+<div class="card-body">
+  <h5 class="card-title">${item.name}</h5>
+  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+  <a href="#" class="btn btn-primary">Go somewhere</a>
+</div>
+</div>`
+})
+renderToDom("#display-body", reference)
+}
+renderOverview(deleteMe)
+
+//selectors to flip displayed page
+document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
+document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
