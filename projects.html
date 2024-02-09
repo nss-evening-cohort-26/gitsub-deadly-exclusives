@@ -9,7 +9,7 @@
   <link rel="shortcut icon" href="#">
 </head>
 
-<body>
+<body id="projects-page-body">
 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -18,18 +18,21 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a id="overview-page" class="nav-link" aria-current="page" href="index.html">Overview</a>
-          <a class="nav-link" href="repos.html">Repositories</a>
-          <a id="projects-page" class="nav-link" href="projects.html">Projects</a>
-          <a class="nav-link" href="packages.html">Packages</a>
+          <div id="overview-test"><a id="overview-page" class="nav-link" aria-current="page" href="index.html">Overview</a></div>
+          <div id="repo-test"><a id="repos-page" class="nav-link" href="repos.html">Repositories</a></div>
+          <div id="project-test"><a id="projects-page" class="nav-link" href="projects.html">Projects</a></div>
+          <div id="package-test"><a id ="packages-page" class="nav-link" href="packages.html">Packages</a></div>
         </div>
       </div>
     </div>
   </nav>
 
-  <div id="sidebar">Sidebar</div>
+  <div id="sidebar">Sidebar-Projects</div>
 
-  <div id="display-body"></div>
+  <div id="overview-body"></div>
+  <div id="repo-body"></div>
+  <div id="package-body"></div>
+  <div id="project-body"></div>
 
   <form id="submit-form"></form>
 

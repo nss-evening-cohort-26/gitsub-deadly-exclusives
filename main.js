@@ -115,12 +115,56 @@ user = {
   }],
 }
 
-const deleteMe =[{name:"To be changed later"}]
+//const deleteMe =[{name:"To be changed later"}]
 
 //utility function
 const renderToDom = (divId, html) =>{
   const selectedDiv = document.querySelector(divId)
   selectedDiv.innerHTML = html
+}
+
+//user-sidebar display
+const userDisplay = (array) => {
+  let domString = ""
+  array.forEach((element) => {
+    domString += 
+    `<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">An item</li>
+      <li class="list-group-item">A second item</li>
+      <li class="list-group-item">A third item</li>
+    </ul>
+    <div class="card-body">
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>`
+  })
+  renderToDom("#sidebar", domString)
+}
+
+
+//function for Overview display currently all placeholder 
+const overviewPage = (array) => {
+  let domString = ""
+  array.forEach((element) => {
+    domString += 
+    `<div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">${element.name}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+      </div>
+    </div>`
+  });
+renderToDom("#overview-body", domString)
 }
 
 //function to display projects "page"
@@ -137,58 +181,70 @@ const renderProjects = (array) =>{
       <a href="#" class="btn btn-primary">Delete</a>
     </div>
   </div>`
+  })
 
-  const projectCreator = () =>{
-    const display =
-    `<form id="submit-form">
-  <h5>Create a new Project</h5>
-    <input type="text" class="form-name" id="name" placeholder="Name" required>
-    <input type ="text" class="form-description" placeholder="Description">
-    <button type="submit" class="btn" id="submit-btn">Create</button>
-  </form>`
-  return display
-  }  
-  renderToDom("#submit-form",projectCreator())
+  // const projectCreator = () =>{
+  //   const display =
+  //   `<form id="submit-form">
+  // <h5>Create a new Project</h5>
+  //   <input type="text" class="form-name" id="name" placeholder="Name" required>
+  //   <input type ="text" class="form-description" placeholder="Description">
+  //   <button type="submit" class="btn" id="submit-btn">Create</button>
+  // </form>`
+  // return display
+  // }  
+  // renderToDom("#submit-form",projectCreator())
+  // });
+  renderToDom("#project-body", reference)
+}
+
+// const repoHTML = (repos = user.repositories) => {
+//   let htmlString = ""
+
+// }
+
+
+const renderPackages = (array) => {
+  let reference = ""
+  array.forEach((element) => {
+    reference += `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">${element.description}</p>
+      <a href="${element.learnUrl}" class="card-link">Learn More</a>
+    </div>
+  </div>`
   });
-  renderToDom("#display-body", reference)
+  renderToDom("#package-body", reference)
 }
 
-const repoHTML = (repos = user.repositories) => {
-  let htmlString = ""
 
-}
+// const startUp = () => {
+//   if (window.location.href.includes("index.html")) {
+//     renderOverview(deleteMe)
+//   } else if (window.location.href.includes("repos.html")) {
 
-//function for Overview display currently all placeholder 
-const renderOverview = (item) =>{
-let reference = ""
-item.forEach((item) =>{
-reference += `<div id ="display-body" class="card">
-<div class="card-header">
-  Pinned Repos
-</div>
-<div class="card-body">
-  <h5 class="card-title">${item.name}</h5>
-  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-  <a href="#" class="btn btn-primary">Go somewhere</a>
-</div>
-</div>`
-})
-renderToDom("#display-body", reference)
-}
+//   } else if (window.location.href.includes("projects.html")) {
+//     renderProjects(user.projects)
+//   } else if (window.location.href.includes("packages.html")) {
+//     renderPackages(user.packages)
+//   }
+// }
 const startUp = () => {
-  if (window.location.href.includes("index.html")) {
-    renderOverview(deleteMe)
-  } else if (window.location.href.includes("repos.html")) {
-
-  } else if (window.location.href.includes("projects.html")) {
-    renderProjects(user.projects)
-  } else if (window.location.href.includes("packages.html")) {
-
-  }
+  overviewPage(user.repositories);
 }
+
+
+// const projectsPage = document.querySelector("#projects-page");
+// projectsPage.addEventListener("click", renderProjects(user.projects))
+
 
 //selectors to flip displayed page
-// document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
-// document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
+document.querySelector("#project-test").addEventListener("click", renderProjects(user.projects))
+//document.querySelector("#overview-test").addEventListener("click", renderProjects(user.projects))
+document.querySelector("#package-test").addEventListener("click", renderPackages(user.packages))
+//document.querySelector("#repo-test").addEventListener("click", renderProjects(user.projects))
+
+
 
 startUp()
