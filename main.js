@@ -123,8 +123,23 @@ const renderToDom = (divId, html) =>{
   selectedDiv.innerHTML = html
 }
 
+document.querySelector("#display-body").addEventListener("click", (e) => {
+  if (e.target.id.includes("delete")) {
+    const [,type,itemId] = e.target.id.split('--')
+    const itemIndex = user[type].findIndex(item => item.id = itemId)
+    user[type].splice(itemIndex, 1)
+    if (type === "repositories") {
+      // renderRepos()
+    } else if (type === "projects") {
+      renderProjects()
+    } else if (type === "packages") {
+      // renderPackages()
+    }
+  }
+})
+
 //function to display projects "page"
-const renderProjects = (array) =>{
+const renderProjects = (array = user.projects) =>{
   let reference = ""
   array.forEach((element) => {
     reference += `<div id="display-body" class="card">
@@ -134,7 +149,7 @@ const renderProjects = (array) =>{
     <div class="card-body">
       <h5 class="card-title">${element.name}</h5>
       <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Delete</a>
+      <a href="#" class="btn btn-primary" id="delete--projects--${element.id}">Delete</a>
     </div>
   </div>`
 
