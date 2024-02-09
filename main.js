@@ -153,9 +153,69 @@ const renderProjects = (array) =>{
   renderToDom("#display-body", reference)
 }
 
-const repoHTML = (repos = user.repositories) => {
+const renderRepos = (repos = user.repositories) => {
   let htmlString = ""
+  repos.map(repo => {
+    htmlString += `<div class="card repo-card">
+                    <div class="repo-left">
+                      <div class="card-body">
+                        <h5 class="card-title">${repo.name}</h5>
+                        <p class="card-text">${repo.description}</p>
+                        <div class="tag-body">`
+                          repo.tags.map(tag => {htmlString += `<div class="repo-tag">${tag}</div>`})
+          htmlString += `</div>
+                        <div class="repo-details">
+                          <div>${repo.language}</div>
+                          <div>${repo.favorites}</div>
+                          <div>${repo.forks}</div>`
+                          if (repo.license) {htmlString += `<div>${repo.license}</div>`}
+                          if (repo.issues > 0) {
+                            htmlString += `${repo.issues} ${repo.issues === 1 ? 'issue needs help' : 'issues need help'}`
+                          }
+            htmlString += `<div>Updated on ${repo.timestamp.toDateString()}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="repo-right">
+                      <button class="btn btn-outline-light" id="star--repositories--${repo.id}">Star</button>
+                      <button class="btn btn-outline-light" id="delete--repositories--${repo.id}">Delete</button>
+                    </div>
+                  </div>`
+  })
+  renderToDom("#display-body", htmlString)
+}
 
+const repoForm = () => {
+  const formDisplay = `<h5>Create a New Repository</h5>
+                      <input type="text" class="form-name" id="name" name="name" placeholder="Name" required>
+                      <input type ="text" class="form-description" id="description" name="description" placeholder="Description" required>
+                      <input type="text" class="form-description" name="tags" placeholder="Tags">
+                      <p>Add tags separated by commas (',')</p>
+                      <input type="text" name="language" placeholder="Primary Language (JavaScript, TypeScript, etc.)" required>
+                      <input type="text" name="license" placeholder="License">
+                      <button type="submit" class="btn" id="submit-btn">Create Repository</button>`
+  renderToDom("#submit-form", formDisplay)
+  document.querySelector("#submit-form").addEventListener("submit", (e) => {
+    e.preventDefault()
+    formData = new FormData(e.target)
+    const newRepo = {
+      id: user.repositories[user.repositories.length -1].id + 1,
+      name: formData.get('name'),
+      description: formData.get('description'),
+      tags: formData.get('tags').toLowerCase().split(',').map(tag => tag.trim()),
+      language: formData.get('language'),
+      favorites: 0,
+      forks: 0,
+      license: formData.get('license'),
+      issues: 0,
+      timestamp: new Date(),
+      star: false,
+    }
+    user.repositories.push(newRepo)
+    renderRepos()
+    document.querySelector("#submit-form").reset()
+    console.log("Submitted")
+  })
 }
 
 //function for Overview display currently all placeholder 
@@ -212,7 +272,8 @@ const startUp = () => {
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
   } else if (window.location.href.includes("repos.html")) {
-
+    renderRepos()
+    repoForm()
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
   } else if (window.location.href.includes("packages.html")) {

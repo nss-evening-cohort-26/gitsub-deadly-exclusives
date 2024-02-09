@@ -1,3 +1,34 @@
 body {
   background: lime;
 }
+
+.repo-card, .tag-body, .repo-details {
+  display: flex;
+}
+
+.repo-card {
+  background: rgb(24, 24, 24);
+  color: rgb(67, 147, 250);
+  flex-direction: row;
+}
+
+.repo-tag {
+  padding: 0.5rem 1rem;
+  background: rgb(63, 63, 99);
+  border-radius: 1rem;
+  margin: 1px;
+}
+
+.repo-left {
+  width: 75%;
+}
+
+.repo-right {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+}
+
+.repo-details {
+  gap: 3px;
+}
