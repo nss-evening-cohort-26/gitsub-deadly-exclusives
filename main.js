@@ -266,8 +266,6 @@ const createPackage = (e) => {
   renderPackages(user.packages)
 }
 
-document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
-
 const startUp = () => {
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
@@ -278,6 +276,7 @@ const startUp = () => {
     renderProjects(user.projects)
   } else if (window.location.href.includes("packages.html")) {
     renderPackages(user.packages)
+    document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
   }
 }
 
