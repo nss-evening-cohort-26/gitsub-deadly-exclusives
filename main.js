@@ -175,6 +175,39 @@ reference += `<div id ="display-body" class="card">
 })
 renderToDom("#display-body", reference)
 }
+
+//function to display package cards on the packages page
+const renderPackages = (array) => {
+  let reference = ""
+  array.forEach((element) => {
+    reference += `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">${element.description}</p>
+      <a href="${element.learnUrl}" class="card-link">Learn More</a>
+    </div>
+  </div>`
+  });
+  renderToDom("#display-body", reference)
+}
+
+//function to create packages
+const createPackage = (e) => {
+  e.preventDefault();
+
+  const newPackage = {
+    id: user.packages.length + 1,
+    name: document.querySelector("#name-input").value,
+    description: document.querySelector("#description-area").value,
+    learnUrl: document.querySelector("#url-input").value
+  }
+  user.packages.push(newPackage);
+  document.querySelector("#submit-package-form").reset();
+  renderPackages(user.packages)
+}
+
+document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
+
 const startUp = () => {
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
@@ -183,11 +216,11 @@ const startUp = () => {
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
   } else if (window.location.href.includes("packages.html")) {
-
+    renderPackages(user.packages)
   }
 }
 
-//selectors to flip displayed page
+// selectors to flip displayed page
 // document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
 // document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
 
