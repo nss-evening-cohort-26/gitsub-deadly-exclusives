@@ -32,3 +32,8 @@ body {
 .repo-details {
   gap: 3px;
 }
+
+.activePage {
+  font-weight: bold;
+  border-bottom: 3px solid white;
+}
