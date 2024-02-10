@@ -3,8 +3,24 @@
   color: rgb(197, 197, 197)
 }
 
-.navbar-nav {
-  
+body {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar-container, #display-body, #submit-form, #submit-package-form {
+  float: right;
+  width: 75%;
+} 
+
+#sidebar {
+  float: left;
+  width: 25%
+}
+
+footer {
+  clear: both;
+  width: 100%;
 }
 .repo-card, .tag-body, .repo-details {
   display: flex;
