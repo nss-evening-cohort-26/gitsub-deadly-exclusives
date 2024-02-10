@@ -129,33 +129,67 @@ const renderProjects = (array) =>{
   array.forEach((element) => {
     reference += `<div id="display-body" class="card">
     <div class="card-header">
-      Featured
+    Featured
     </div>
     <div class="card-body">
-      <h5 class="card-title">${element.name}</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Delete</a>
+    <h5 class="card-title">${element.name}</h5>
+    <p class="card-text">${element.description}</p>
+    <a href="#" class="btn btn-primary">Delete</a>
     </div>
-  </div>`
-
+      </div>`
+  }) 
   const projectCreator = () =>{
     const display =
     `<form id="submit-form">
   <h5>Create a new Project</h5>
     <input type="text" class="form-name" id="name" placeholder="Name" required>
-    <input type ="text" class="form-description" placeholder="Description">
+    <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
     <button type="submit" class="btn" id="submit-btn">Create</button>
   </form>`
   return display
-  }  
+}  
   renderToDom("#submit-form",projectCreator())
-  });
   renderToDom("#display-body", reference)
+  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
+    e.preventDefault()
+    addNewProject(e)
+    renderProjects(user.projects)
+  })
 }
+
+
+const projectNameInput = document.querySelector("#name");
+const projectDescriptionInput = document.querySelector("#description");
+
+const addNewProject = (e) =>{
+  e.preventDefault()
+  const newProject ={
+    name: document.querySelector("#name").value,
+    description: document.querySelector("#description").value,
+    id: user.projects.length +1,
+  }
+  user.projects.push(newProject)
+  renderProjects(user.projects)
+  form.reset()
+  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
+    e.preventDefault()
+    addNewProject(e)
+    renderProjects(user.projects)
+  })
+  
+}
+
+const form = document.querySelector("#submit-form")
+
+
+
+
+
+
 
 const renderRepos = (repos = user.repositories) => {
   let htmlString = ""
-  repos.map(repo => {
+    repos.map(repo => {
     htmlString += `<div class="card repo-card">
                     <div class="repo-left">
                       <div class="card-body">
@@ -215,23 +249,23 @@ const repoForm = () => {
     renderRepos()
     document.querySelector("#submit-form").reset()
     console.log("Submitted")
-  })
+  })  
 }
 
 //function for Overview display currently all placeholder 
 const renderOverview = (item) =>{
-let reference = ""
-item.forEach((item) =>{
-reference += `<div id ="display-body" class="card">
-<div class="card-header">
+    let reference = ""
+    item.forEach((item) =>{
+        reference += `<div id ="display-body" class="card">
+        <div class="card-header">
   Pinned Repos
-</div>
+    </div>
 <div class="card-body">
-  <h5 class="card-title">${item.name}</h5>
+<h5 class="card-title">${item.name}</h5>
   <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
   <a href="#" class="btn btn-primary">Go somewhere</a>
-</div>
-</div>`
+    </div>
+    </div>`
 })
 renderToDom("#display-body", reference)
 }
@@ -270,15 +304,21 @@ const startUp = () => {
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
   } else if (window.location.href.includes("repos.html")) {
-    renderRepos()
+            renderRepos()
     repoForm()
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
   } else if (window.location.href.includes("packages.html")) {
-    renderPackages(user.packages)
-    document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
+        renderPackages(user.packages)
+    document.querySelector("#submit-package-form").addEventListener("submit", createPackage)    
   }
 }
+
+
+
+
+
+
 
 // selectors to flip displayed page
 // document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
