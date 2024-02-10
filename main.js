@@ -1,7 +1,7 @@
 user = {
   name: "Harrison Buford",
   profile: "profile-pic/harrison-buford.png",
-  bio: "Building tech to elevate people. Always surprised as evident in my photo.",
+  bio: "Building tech to elevate people. Always surprised.",
   followers: 523,
   following: 7,
   favorites: [],
@@ -278,14 +278,27 @@ const renderUserSidebar = (object) => {
 </div>
 <button id="follow-btn">Follow</button>
 <button id="sponsor-btn">Sponsor</button>
+<p>${object.followers} followers</p>
+<p>${object.following} following</p>
+<p>${object.favorites.length}</p>
+<p>${object.location}</p>
+<p>${object.email}</p>
+<p>${object.website}</p>
+<p>${object.twitter}</p>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item">An item</li>
-  <li class="list-group-item">A second item</li>
-  <li class="list-group-item">A third item</li>
+  <li class="list-group-item">
+    <h5>Highlights</h5>
+    <p>I code</p>
+    <p>GitHub Star</p>
+  </li>
+  <li class="list-group-item">
+  <h5>Organizations</h5>
+  </li>
+  <li class="list-group-item">
+  <h5>Sponsors</h5>
+  </li>
 </ul>
 <div class="card-body">
-  <a href="#" class="card-link">Card link</a>
-  <a href="#" class="card-link">Another link</a>
 </div>
 </div>`
 renderToDom ("#sidebar", userSidebar)
