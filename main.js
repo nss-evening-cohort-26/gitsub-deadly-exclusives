@@ -352,9 +352,31 @@ const renderNav = () => {
 renderToDom('#navbar-container', htmlString)
 }
 
+const renderFooter = () =>{
+  const htmlData = `
+  <ul class="nav justify-content-center" >
+  © 2024 Deadly Exclusives
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Privacy</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Help</a>
+  </li>
+  <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/small-3391761-2825736.png" width="50" height="60" >
+  <li class="nav-item">
+    <a class="nav-link" href="#">Terms</a>
+  </li>
+  <li class="nav-item">
+  <a class="nav-link" href="#">About</a>
+  </li>
+</ul>`
+renderToDom ("#footer", htmlData)
+}
+
 const startUp = () => {
   renderUserSidebar(user)
   renderNav()
+  renderFooter()
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
     document.querySelector("#overview-page").classList += "activePage"
