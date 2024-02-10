@@ -1,5 +1,6 @@
-body {
-  background: lime;
+*, .card-header, ul, p, .card {
+  background: rgb(23, 23, 23) !important;
+  color: rgb(197, 197, 197)
 }
 
 .repo-card, .tag-body, .repo-details {
