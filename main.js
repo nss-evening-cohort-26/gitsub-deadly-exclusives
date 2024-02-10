@@ -199,8 +199,7 @@ const addNewProject = (e) =>{
   const newProject ={
     name: document.querySelector("#name").value,
     description: document.querySelector("#description").value,
-    id: user.projects.length + 1
-    // id: (user.projects.length > 0 ? user.projects[user.projects.length - 1].id + 1 : 1)
+    id: (user.projects.length > 0 ? user.projects[user.projects.length - 1].id + 1 : 1)
   }
   user.projects.push(newProject)
   renderProjects(user.projects)
