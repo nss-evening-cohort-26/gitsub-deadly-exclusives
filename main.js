@@ -81,6 +81,16 @@ user = {
     id: 3,
     name:"Last Project",
     description: "If this doesn't work I quit."
+   },
+   {
+    id: 4,
+    name:"It's ok, it's fine",
+    description:"*deep breathing*"
+   },
+   {
+    id: 5,
+    name:"Console Log",
+    description:"successfully displayed console log messages"
    }
   ],
   packages: [{
