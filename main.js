@@ -1,7 +1,7 @@
 user = {
   name: "Harrison Buford",
-  profile: "profile-pic\harrison-buford.png"
-  bio: "Building tech to elevate people. Always surprised as evident in my photo."
+  profile: "profile-pic/harrison-buford.png",
+  bio: "Building tech to elevate people. Always surprised as evident in my photo.",
   followers: 523,
   following: 7,
   favorites: [],
@@ -276,6 +276,8 @@ const renderUserSidebar = (object) => {
   <h5 class="card-title">${object.name}</h5>
   <p class="card-text">${object.bio}</p>
 </div>
+<button id="follow-btn">Follow</button>
+<button id="sponsor-btn">Sponsor</button>
 <ul class="list-group list-group-flush">
   <li class="list-group-item">An item</li>
   <li class="list-group-item">A second item</li>
