@@ -181,12 +181,6 @@ const addNewProject = (e) =>{
 
 const form = document.querySelector("#submit-form")
 
-
-
-
-
-
-
 const renderRepos = (repos = user.repositories) => {
   let htmlString = ""
     repos.map(repo => {
@@ -300,25 +294,44 @@ const createPackage = (e) => {
   renderPackages(user.packages)
 }
 
-const startUp = () => {
-  if (window.location.href.includes("index.html")) {
-    renderOverview(deleteMe)
-  } else if (window.location.href.includes("repos.html")) {
-            renderRepos()
-    repoForm()
-  } else if (window.location.href.includes("projects.html")) {
-    renderProjects(user.projects)
-  } else if (window.location.href.includes("packages.html")) {
-        renderPackages(user.packages)
-    document.querySelector("#submit-package-form").addEventListener("submit", createPackage)    
-  }
+
+const renderNav = () => {
+  const htmlString = `<nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid">
+                          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                          </button>
+                          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                              <a id="overview-page" class="nav-link" aria-current="page" href="index.html">Overview</a>
+                              <a id="repos-page" class="nav-link" href="repos.html">Repositories</a>
+                              <a id="projects-page" class="nav-link" href="projects.html">Projects</a>
+                              <a id="packages-page" class="nav-link" href="packages.html">Packages</a>
+                            </div>
+                          </div>
+                        </div>
+                      </nav>`
+renderToDom('#navbar-container', htmlString)
 }
 
-
-
-
-
-
+const startUp = () => {
+  renderNav()
+  if (window.location.href.includes("index.html")) {
+    renderOverview(deleteMe)
+    document.querySelector("#overview-page").classList += "activePage"
+  } else if (window.location.href.includes("repos.html")) {
+    renderRepos()
+    repoForm()    
+    document.querySelector("#repos-page").classList += "activePage"
+  } else if (window.location.href.includes("projects.html")) {
+    renderProjects(user.projects)
+    document.querySelector("#projects-page").classList += "activePage"
+  } else if (window.location.href.includes("packages.html")) {
+    renderPackages(user.packages)
+    document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
+    document.querySelector("#packages-page").classList += "activePage"
+  }
+}
 
 // selectors to flip displayed page
 // document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
