@@ -130,18 +130,14 @@ const renderProjects = (array) =>{
     reference += `<div id="display-body" class="card">
     <div class="card-header">
     Featured
-    Featured
     </div>
     <div class="card-body">
     <h5 class="card-title">${element.name}</h5>
     <p class="card-text">${element.description}</p>
     <a href="#" class="btn btn-primary">Delete</a>
-    <h5 class="card-title">${element.name}</h5>
-    <p class="card-text">${element.description}</p>
-    <a href="#" class="btn btn-primary">Delete</a>
     </div>
       </div>`
-  })  })
+  }) 
   const projectCreator = () =>{
     const display =
     `<form id="submit-form">
@@ -151,7 +147,6 @@ const renderProjects = (array) =>{
     <button type="submit" class="btn" id="submit-btn">Create</button>
   </form>`
   return display
-}  
 }  
   renderToDom("#submit-form",projectCreator())
   renderToDom("#display-body", reference)
@@ -176,7 +171,12 @@ const addNewProject = (e) =>{
   user.projects.push(newProject)
   renderProjects(user.projects)
   form.reset()
-  console.log(user.projects)
+  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
+    e.preventDefault()
+    addNewProject(e)
+    renderProjects(user.projects)
+  })
+  
 }
 
 const form = document.querySelector("#submit-form")
@@ -325,9 +325,3 @@ const startUp = () => {
 // document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
 
 startUp()
-
-document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
-  e.preventDefault()
-  addNewProject(e)
-  renderProjects(user.projects)
-})
