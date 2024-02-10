@@ -1,5 +1,7 @@
 user = {
   name: "Harrison Buford",
+  profile: "profile-pic/harrison-buford.png",
+  bio: "Building tech to elevate people. Always surprised.",
   followers: 523,
   following: 7,
   favorites: [],
@@ -295,6 +297,42 @@ const createPackage = (e) => {
 }
 
 
+const renderUserSidebar = (object) => {
+  userSidebar = `<div class="card" style="width: 18rem;">
+<img src="${object.profile}" class="card-img-top" alt="...">
+<div class="card-body">
+  <h5 class="card-title">${object.name}</h5>
+  <p class="card-text">${object.bio}</p>
+</div>
+<button id="follow-btn">Follow</button>
+<button id="sponsor-btn">Sponsor</button>
+<p>${object.followers} followers</p>
+<p>${object.following} following</p>
+<p>${object.favorites.length}</p>
+<p>${object.location}</p>
+<p>${object.email}</p>
+<p>${object.website}</p>
+<p>${object.twitter}</p>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <h5>Highlights</h5>
+    <p>I code</p>
+    <p>GitHub Star</p>
+  </li>
+  <li class="list-group-item">
+  <h5>Organizations</h5>
+  </li>
+  <li class="list-group-item">
+  <h5>Sponsors</h5>
+  </li>
+</ul>
+<div class="card-body">
+</div>
+</div>`
+renderToDom ("#sidebar", userSidebar)
+}
+
+
 const renderNav = () => {
   const htmlString = `<nav class="navbar navbar-expand-lg bg-body-tertiary">
                         <div class="container-fluid">
@@ -315,6 +353,7 @@ renderToDom('#navbar-container', htmlString)
 }
 
 const startUp = () => {
+  renderUserSidebar(user)
   renderNav()
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
