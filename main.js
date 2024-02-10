@@ -1,5 +1,7 @@
 user = {
   name: "Harrison Buford",
+  profile: "profile-pic\harrison-buford.png"
+  bio: "Building tech to elevate people. Always surprised as evident in my photo."
   followers: 523,
   following: 7,
   favorites: [],
@@ -266,7 +268,29 @@ const createPackage = (e) => {
   renderPackages(user.packages)
 }
 
+
+const renderUserSidebar = (object) => {
+  userSidebar = `<div class="card" style="width: 18rem;">
+<img src="${object.profile}" class="card-img-top" alt="...">
+<div class="card-body">
+  <h5 class="card-title">${object.name}</h5>
+  <p class="card-text">${object.bio}</p>
+</div>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">An item</li>
+  <li class="list-group-item">A second item</li>
+  <li class="list-group-item">A third item</li>
+</ul>
+<div class="card-body">
+  <a href="#" class="card-link">Card link</a>
+  <a href="#" class="card-link">Another link</a>
+</div>
+</div>`
+renderToDom ("#sidebar", userSidebar)
+}
+
 const startUp = () => {
+  renderUserSidebar(user)
   if (window.location.href.includes("index.html")) {
     renderOverview(deleteMe)
   } else if (window.location.href.includes("repos.html")) {
