@@ -3,6 +3,9 @@
   color: rgb(197, 197, 197)
 }
 
+.navbar-nav {
+  
+}
 .repo-card, .tag-body, .repo-details {
   display: flex;
 }
