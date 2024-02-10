@@ -21,6 +21,7 @@ user = {
     issues: 1,
     timestamp: new Date(2024, 0, 29, 22, 21, 43, 32),
     star: false,
+    pinned: false
   }, {
     id: 2,
     name: "how-many-days-until",
@@ -33,6 +34,7 @@ user = {
     issues: 0,
     timestamp: new Date(2024, 0, 13, 8, 55, 55, 0),
     star: false,
+    pinned: false
   }, {
     id: 3,
     name: "httriri",
@@ -45,6 +47,7 @@ user = {
     issues: 4,
     timestamp: new Date(2024, 1, 6, 17, 45, 9, 0),
     star: false,
+    pinned: false
   }, {
     id: 4,
     name: "ambition-fund-website",
@@ -58,6 +61,7 @@ user = {
     issues: 3,
     timestamp: new Date(2022, 1, 1, 2, 32, 1, 78),
     star: false,
+    pinned: false
   }
 ],
   projects: [
@@ -114,8 +118,6 @@ user = {
     learnUrl: "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
   }],
 }
-
-const deleteMe =[{name:"To be changed later"}]
 
 //utility function
 const renderToDom = (divId, html) =>{
@@ -244,6 +246,7 @@ const repoForm = () => {
       issues: 0,
       timestamp: new Date(),
       star: false,
+      pinned: false
     }
     user.repositories.push(newRepo)
     renderRepos()
@@ -253,21 +256,34 @@ const repoForm = () => {
 }
 
 //function for Overview display currently all placeholder 
-const renderOverview = (item) =>{
-    let reference = ""
-    item.forEach((item) =>{
-        reference += `<div id ="display-body" class="card">
-        <div class="card-header">
-  Pinned Repos
-    </div>
-<div class="card-body">
-<h5 class="card-title">${item.name}</h5>
-  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-  <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-    </div>`
-})
-renderToDom("#display-body", reference)
+const renderOverview = () => {
+  const pinnedRepos = user.repositories.filter(item => item.pinned)
+  if (pinnedRepos.length == 0) {
+    const noPinned = `<div>
+                        <p>No pinned repositories. Use form below to select repositories to pin.</p>
+                      </div>`
+    renderToDom("#display-body", noPinned)
+  } else {
+    renderRepos(pinnedRepos)
+  }
+  overviewForm()
+}
+
+const overviewForm = () => {
+  let formHTML = `<select id="add-pin" class="form-select" aria-label="Default select example">
+                      <option selected>Open this select menu</option>`
+  user.repositories.forEach(item => {
+    if (!item.pinned) {formHTML += `<option value="${item.id}">${item.name}</option>`}
+  })
+  formHTML += `</select>
+              <button type="submit" class="btn" id="submit-btn">Create Repository</button>`
+  renderToDom("#submit-form", formHTML)
+  document.querySelector('#submit-form').addEventListener("submit", (e) => {
+    e.preventDefault()
+    const pinId = document.querySelector('#add-pin').value
+    user.repositories.map(item => {if (item.id === Number(pinId)) {item.pinned = true}})
+    renderOverview()
+  })
 }
 
 //function to display package cards on the packages page
@@ -301,16 +317,16 @@ const createPackage = (e) => {
 }
 
 const startUp = () => {
-  if (window.location.href.includes("index.html")) {
-    renderOverview(deleteMe)
-  } else if (window.location.href.includes("repos.html")) {
-            renderRepos()
+  if (window.location.href.includes("repos.html")) {
+    renderRepos()
     repoForm()
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
   } else if (window.location.href.includes("packages.html")) {
-        renderPackages(user.packages)
+    renderPackages(user.packages)
     document.querySelector("#submit-package-form").addEventListener("submit", createPackage)    
+  } else {
+    renderOverview()
   }
 }
 
