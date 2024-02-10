@@ -1,5 +1,7 @@
 user = {
   name: "Harrison Buford",
+  profile: "profile-pic/harrison-buford.png",
+  bio: "Building tech to elevate people. Always surprised.",
   followers: 523,
   following: 7,
   favorites: [],
@@ -21,6 +23,7 @@ user = {
     issues: 1,
     timestamp: new Date(2024, 0, 29, 22, 21, 43, 32),
     star: false,
+    pinned: false
   }, {
     id: 2,
     name: "how-many-days-until",
@@ -33,6 +36,7 @@ user = {
     issues: 0,
     timestamp: new Date(2024, 0, 13, 8, 55, 55, 0),
     star: false,
+    pinned: false
   }, {
     id: 3,
     name: "httriri",
@@ -45,6 +49,7 @@ user = {
     issues: 4,
     timestamp: new Date(2024, 1, 6, 17, 45, 9, 0),
     star: false,
+    pinned: false
   }, {
     id: 4,
     name: "ambition-fund-website",
@@ -58,6 +63,7 @@ user = {
     issues: 3,
     timestamp: new Date(2022, 1, 1, 2, 32, 1, 78),
     star: false,
+    pinned: false
   }
 ],
   projects: [
@@ -75,6 +81,16 @@ user = {
     id: 3,
     name:"Last Project",
     description: "If this doesn't work I quit."
+   },
+   {
+    id: 4,
+    name:"It's ok, it's fine",
+    description:"*deep breathing*"
+   },
+   {
+    id: 5,
+    name:"Console Log",
+    description:"successfully displayed console log messages"
    }
   ],
   packages: [{
@@ -115,8 +131,6 @@ user = {
   }],
 }
 
-const deleteMe =[{name:"To be changed later"}]
-
 //utility function
 const renderToDom = (divId, html) =>{
   const selectedDiv = document.querySelector(divId)
@@ -126,14 +140,18 @@ const renderToDom = (divId, html) =>{
 document.querySelector("#display-body").addEventListener("click", (e) => {
   if (e.target.id.includes("delete")) {
     const [,type,itemId] = e.target.id.split('--')
-    const itemIndex = user[type].findIndex(item => item.id = itemId)
+    const itemIndex = user[type].findIndex(item => item.id === Number(itemId))
     user[type].splice(itemIndex, 1)
     if (type === "repositories") {
-      // renderRepos()
+      if (window.location.href.includes("repos.html")) {
+        renderRepos()
+      } else {
+        renderOverview()
+      }
     } else if (type === "projects") {
       renderProjects()
     } else if (type === "packages") {
-      // renderPackages()
+      renderPackages()
     }
   }
 })
@@ -144,65 +162,279 @@ const renderProjects = (array = user.projects) =>{
   array.forEach((element) => {
     reference += `<div id="display-body" class="card">
     <div class="card-header">
-      Featured
+    Featured
     </div>
     <div class="card-body">
       <h5 class="card-title">${element.name}</h5>
       <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary" id="delete--projects--${element.id}">Delete</a>
+      <a class="btn btn-primary" id="delete--projects--${element.id}">Delete</a>
     </div>
-  </div>`
-
+      </div>`
+  }) 
   const projectCreator = () =>{
     const display =
     `<form id="submit-form">
   <h5>Create a new Project</h5>
     <input type="text" class="form-name" id="name" placeholder="Name" required>
-    <input type ="text" class="form-description" placeholder="Description">
+    <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
     <button type="submit" class="btn" id="submit-btn">Create</button>
   </form>`
   return display
-  }  
+}  
   renderToDom("#submit-form",projectCreator())
+  renderToDom("#display-body", reference)
+  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
+    e.preventDefault()
+    addNewProject(e)
+    renderProjects(user.projects)
+  })
+}
+
+
+const projectNameInput = document.querySelector("#name");
+const projectDescriptionInput = document.querySelector("#description");
+
+const addNewProject = (e) =>{
+  e.preventDefault()
+  const newProject ={
+    name: document.querySelector("#name").value,
+    description: document.querySelector("#description").value,
+    id: user.projects.length + 1
+    // id: (user.projects.length > 0 ? user.projects[user.projects.length - 1].id + 1 : 1)
+  }
+  user.projects.push(newProject)
+  renderProjects(user.projects)
+  form.reset()  
+}
+
+const form = document.querySelector("#submit-form")
+
+const renderRepos = (repos = user.repositories) => {
+  let htmlString = ""
+    repos.map(repo => {
+    htmlString += `<div class="card repo-card">
+                    <div class="repo-left">
+                      <div class="card-body">
+                        <h5 class="card-title">${repo.name}</h5>
+                        <p class="card-text">${repo.description}</p>
+                        <div class="tag-body">`
+                          repo.tags.map(tag => {htmlString += `<div class="repo-tag">${tag}</div>`})
+          htmlString += `</div>
+                        <div class="repo-details">
+                          <div>${repo.language}</div>
+                          <div>${repo.favorites}</div>
+                          <div>${repo.forks}</div>`
+                          if (repo.license) {htmlString += `<div>${repo.license}</div>`}
+                          if (repo.issues > 0) {
+                            htmlString += `${repo.issues} ${repo.issues === 1 ? 'issue needs help' : 'issues need help'}`
+                          }
+            htmlString += `<div>Updated on ${repo.timestamp.toDateString()}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="repo-right">
+                      <button class="btn btn-outline-light" id="star--repositories--${repo.id}">Star</button>
+                      <button class="btn btn-outline-light" id="delete--repositories--${repo.id}">Delete</button>
+                    </div>
+                  </div>`
+  })
+  renderToDom("#display-body", htmlString)
+}
+
+const repoForm = () => {
+  const formDisplay = `<h5>Create a New Repository</h5>
+                      <input type="text" class="form-name" id="name" name="name" placeholder="Name" required>
+                      <input type ="text" class="form-description" id="description" name="description" placeholder="Description" required>
+                      <input type="text" class="form-description" name="tags" placeholder="Tags">
+                      <p>Add tags separated by commas (',')</p>
+                      <input type="text" name="language" placeholder="Primary Language (JavaScript, TypeScript, etc.)" required>
+                      <input type="text" name="license" placeholder="License">
+                      <button type="submit" class="btn" id="submit-btn">Create Repository</button>`
+  renderToDom("#submit-form", formDisplay)
+  document.querySelector("#submit-form").addEventListener("submit", (e) => {
+    e.preventDefault()
+    formData = new FormData(e.target)
+    const newRepo = {
+      id: (user.repositories.length > 0 ? user.repositories[user.repositories.length -1].id + 1 : 1),
+      name: formData.get('name'),
+      description: formData.get('description'),
+      tags: formData.get('tags').toLowerCase().split(',').map(tag => tag.trim()),
+      language: formData.get('language'),
+      favorites: 0,
+      forks: 0,
+      license: formData.get('license'),
+      issues: 0,
+      timestamp: new Date(),
+      star: false,
+      pinned: false
+    }
+    user.repositories.push(newRepo)
+    renderRepos()
+    document.querySelector("#submit-form").reset()
+    console.log("Submitted")
+  })  
+}
+
+//function for Overview display currently all placeholder 
+const renderOverview = () => {
+  const pinnedRepos = user.repositories.filter(item => item.pinned)
+  if (pinnedRepos.length == 0) {
+    const noPinned = `<div>
+                        <p>No pinned repositories. Use form below to select repositories to pin.</p>
+                      </div>`
+    renderToDom("#display-body", noPinned)
+  } else {
+    renderRepos(pinnedRepos)
+  }
+  overviewForm()
+}
+
+const overviewForm = () => {
+  let formHTML = `<select id="add-pin" class="form-select" aria-label="Default select example">
+                      <option selected>Select repository to pin</option>`
+  user.repositories.forEach(item => {
+    if (!item.pinned) {formHTML += `<option value="${item.id}">${item.name}</option>`}
+  })
+  formHTML += `</select>
+              <button type="submit" class="btn btn-dark" id="submit-btn">Pin Repository</button>`
+  renderToDom("#submit-form", formHTML)
+  document.querySelector('#submit-form').addEventListener("submit", (e) => {
+    e.preventDefault()
+    const pinId = document.querySelector('#add-pin').value
+    user.repositories.map(item => {if (item.id === Number(pinId)) {item.pinned = true}})
+    renderOverview()
+  })
+}
+
+//function to display package cards on the packages page
+const renderPackages = (array = user.packages) => {
+  let reference = ""
+  array.forEach((element) => {
+    reference += `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">${element.description}</p>
+      <a href="${element.learnUrl}" class="card-link">Learn More</a>
+    </div>
+  </div>`
   });
   renderToDom("#display-body", reference)
 }
 
-const repoHTML = (repos = user.repositories) => {
-  let htmlString = ""
+//function to create packages
+const createPackage = (e) => {
+  e.preventDefault();
 
+  const newPackage = {
+    id: (user.packages.length > 0 ? user.packages[user.packages.length - 1].id + 1 : 1),
+    name: document.querySelector("#name-input").value,
+    description: document.querySelector("#description-area").value,
+    learnUrl: document.querySelector("#url-input").value
+  }
+  user.packages.push(newPackage);
+  document.querySelector("#submit-package-form").reset();
+  renderPackages(user.packages)
 }
 
-//function for Overview display currently all placeholder 
-const renderOverview = (item) =>{
-let reference = ""
-item.forEach((item) =>{
-reference += `<div id ="display-body" class="card">
-<div class="card-header">
-  Pinned Repos
-</div>
+
+const renderUserSidebar = (object) => {
+  userSidebar = `<div class="card" style="width: 18rem;">
+<img src="${object.profile}" class="card-img-top" alt="...">
 <div class="card-body">
-  <h5 class="card-title">${item.name}</h5>
-  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-  <a href="#" class="btn btn-primary">Go somewhere</a>
+  <h5 class="card-title">${object.name}</h5>
+  <p class="card-text">${object.bio}</p>
+</div>
+<button id="follow-btn">Follow</button>
+<button id="sponsor-btn">Sponsor</button>
+<p>${object.followers} followers</p>
+<p>${object.following} following</p>
+<p>${object.favorites.length}</p>
+<p>${object.location}</p>
+<p>${object.email}</p>
+<p>${object.website}</p>
+<p>${object.twitter}</p>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">
+    <h5>Highlights</h5>
+    <p>I code</p>
+    <p>GitHub Star</p>
+  </li>
+  <li class="list-group-item">
+  <h5>Organizations</h5>
+  </li>
+  <li class="list-group-item">
+  <h5>Sponsors</h5>
+  </li>
+</ul>
+<div class="card-body">
 </div>
 </div>`
-})
-renderToDom("#display-body", reference)
+renderToDom ("#sidebar", userSidebar)
 }
-const startUp = () => {
-  if (window.location.href.includes("index.html")) {
-    renderOverview(deleteMe)
-  } else if (window.location.href.includes("repos.html")) {
 
+
+const renderNav = () => {
+  const htmlString = `<nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid">
+                          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                          </button>
+                          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                              <a id="overview-page" class="nav-link" aria-current="page" href="index.html">Overview</a>
+                              <a id="repos-page" class="nav-link" href="repos.html">Repositories</a>
+                              <a id="projects-page" class="nav-link" href="projects.html">Projects</a>
+                              <a id="packages-page" class="nav-link" href="packages.html">Packages</a>
+                            </div>
+                          </div>
+                        </div>
+                      </nav>`
+  renderToDom('#navbar-container', htmlString)
+}
+
+const renderFooter = () =>{
+  const htmlData = `
+  <ul class="nav justify-content-center" >
+  © 2024 Deadly Exclusives
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Privacy</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Help</a>
+  </li>
+  <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/small-3391761-2825736.png" width="50" height="60" >
+  <li class="nav-item">
+    <a class="nav-link" href="#">Terms</a>
+  </li>
+  <li class="nav-item">
+  <a class="nav-link" href="#">About</a>
+  </li>
+</ul>`
+renderToDom ("#footer", htmlData)
+}
+
+const startUp = () => {
+  renderUserSidebar(user)
+  renderNav()
+  renderFooter()
+  if (window.location.href.includes("repos.html")) {
+    renderRepos()
+    repoForm()
+    document.querySelector("#repos-page").classList += "activePage"
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
+    document.querySelector("#projects-page").classList += "activePage"
   } else if (window.location.href.includes("packages.html")) {
-
+    renderPackages(user.packages)
+    document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
+    document.querySelector("#packages-page").classList += "activePage"    
+  } else {
+    renderOverview()
+    document.querySelector("#overview-page").classList += "activePage"
   }
 }
 
-//selectors to flip displayed page
+// selectors to flip displayed page
 // document.querySelector("#projects-page").addEventListener("click", () => {renderProjects(user.projects)})
 // document.querySelector("#overview-page").addEventListener("click", () => {renderOverview(deleteMe)})
 
