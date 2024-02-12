@@ -137,8 +137,27 @@ const renderToDom = (divId, html) =>{
   selectedDiv.innerHTML = html
 }
 
+document.querySelector("#display-body").addEventListener("click", (e) => {
+  if (e.target.id.includes("delete")) {
+    const [,type,itemId] = e.target.id.split('--')
+    const itemIndex = user[type].findIndex(item => item.id === Number(itemId))
+    user[type].splice(itemIndex, 1)
+    if (type === "repositories") {
+      if (window.location.href.includes("repos.html")) {
+        renderRepos()
+      } else {
+        renderOverview()
+      }
+    } else if (type === "projects") {
+      renderProjects()
+    } else if (type === "packages") {
+      renderPackages()
+    }
+  }
+})
+
 //function to display projects "page"
-const renderProjects = (array) =>{
+const renderProjects = (array = user.projects) =>{
   let reference = ""
   array.forEach((element) => {
     reference += `<div id="display-body" class="card">
@@ -146,9 +165,9 @@ const renderProjects = (array) =>{
     Featured
     </div>
     <div class="card-body">
-    <h5 class="card-title">${element.name}</h5>
-    <p class="card-text">${element.description}</p>
-    <a href="#" class="btn btn-primary">Delete</a>
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a class="btn btn-primary" id="delete--projects--${element.id}">Delete</a>
     </div>
       </div>`
   }) 
@@ -180,17 +199,11 @@ const addNewProject = (e) =>{
   const newProject ={
     name: document.querySelector("#name").value,
     description: document.querySelector("#description").value,
-    id: user.projects.length +1,
+    id: (user.projects.length > 0 ? user.projects[user.projects.length - 1].id + 1 : 1)
   }
   user.projects.push(newProject)
   renderProjects(user.projects)
-  form.reset()
-  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
-    e.preventDefault()
-    addNewProject(e)
-    renderProjects(user.projects)
-  })
-  
+  form.reset()  
 }
 
 const form = document.querySelector("#submit-form")
@@ -241,7 +254,7 @@ const repoForm = () => {
     e.preventDefault()
     formData = new FormData(e.target)
     const newRepo = {
-      id: user.repositories[user.repositories.length -1].id + 1,
+      id: (user.repositories.length > 0 ? user.repositories[user.repositories.length -1].id + 1 : 1),
       name: formData.get('name'),
       description: formData.get('description'),
       tags: formData.get('tags').toLowerCase().split(',').map(tag => tag.trim()),
@@ -293,7 +306,7 @@ const overviewForm = () => {
 }
 
 //function to display package cards on the packages page
-const renderPackages = (array) => {
+const renderPackages = (array = user.packages) => {
   let reference = ""
   array.forEach((element) => {
     reference += `<div class="card" style="width: 18rem;">
@@ -312,7 +325,7 @@ const createPackage = (e) => {
   e.preventDefault();
 
   const newPackage = {
-    id: user.packages.length + 1,
+    id: (user.packages.length > 0 ? user.packages[user.packages.length - 1].id + 1 : 1),
     name: document.querySelector("#name-input").value,
     description: document.querySelector("#description-area").value,
     learnUrl: document.querySelector("#url-input").value
