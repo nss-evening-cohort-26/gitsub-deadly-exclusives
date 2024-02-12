@@ -32,8 +32,56 @@ footer {
 }
 
 .navbar-nav a {
-  color:rgb(197, 197, 197) 
+  color:rgb(197, 197, 197);
+  padding: 15px 15px;
 }
+
+.navbar-nav a:hover {
+  color:rgb(239, 237, 237);
+  font-style: bold !important;
+}
+
+.nav-btn {
+  padding: 15px 25px;
+}
+
+.nav-link:activePage {
+  border-bottom: 2px solid rgb(208, 115, 84) !important;
+}
+
+#follow-btn, #sponsor-btn, #more-btn {
+  width: fit-content;
+  padding: 7px 10px;
+  background-color: rgb(51, 51, 51) !important;
+  border-radius: 10px;
+  border: none;
+  margin: 0 5px
+}
+
+#user-btn-container {
+  display: flex;
+  margin-left: 10px;
+}
+
+#social-info-container {
+  display: flex;
+  margin-left: 10px;
+}
+
+.contact-info {
+  margin-left: 12px
+}
+
+.card {
+  padding: 10px;
+}
+
+.social-info {
+  border: none;
+  margin: 0 5px;
+  padding: 7px 1px;
+}
+
 .repo-card, .tag-body, .repo-details {
   display: flex;
 }
@@ -42,6 +90,7 @@ footer {
   background: rgb(24, 24, 24);
   color: rgb(67, 147, 250);
   flex-direction: row;
+  border-bottom: 1px solid rgb(47, 47, 47);
 }
 
 .repo-tag {
@@ -65,7 +114,7 @@ footer {
   gap: 3px;
 }
 
-.activePage {
+/*.activePage {
   font-weight: bold;
   border-bottom: 3px solid white;
-}
+}*/
