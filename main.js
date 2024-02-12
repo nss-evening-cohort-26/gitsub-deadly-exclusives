@@ -161,35 +161,27 @@ const renderProjects = (array = user.projects) =>{
   let reference = ""
   array.forEach((element) => {
     reference += `<div id="display-body" class="card">
-    <div class="card-header">
-    Featured
-    </div>
     <div class="card-body">
       <h5 class="card-title">${element.name}</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <p class="card-text">${element.description}</p>
       <a class="btn btn-primary" id="delete--projects--${element.id}">Delete</a>
     </div>
       </div>`
-  }) 
-  const projectCreator = () =>{
-    const display =
-    `<form id="submit-form">
-  <h5>Create a new Project</h5>
-    <input type="text" class="form-name" id="name" placeholder="Name" required>
-    <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
-    <button type="submit" class="btn" id="submit-btn">Create</button>
-  </form>`
-  return display
-}  
-  renderToDom("#submit-form",projectCreator())
-  renderToDom("#display-body", reference)
-  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
-    e.preventDefault()
-    addNewProject(e)
-    renderProjects(user.projects)
-  })
+  })  
+renderToDom("#display-body", reference)
 }
 
+const projectCreator = () =>{
+  const display =
+  `<form id="submit-form">
+<h5>Create a new Project</h5>
+  <input type="text" class="form-name" id="name" placeholder="Name" required>
+  <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
+  <button type="submit" class="btn" id="proj-submit-btn">Create</button>
+</form>`
+return display
+}  
+renderToDom("#submit-form",projectCreator())
 
 const projectNameInput = document.querySelector("#name");
 const projectDescriptionInput = document.querySelector("#description");
@@ -205,7 +197,11 @@ const addNewProject = (e) =>{
   renderProjects(user.projects)
   form.reset()  
 }
-
+document.querySelector("#proj-submit-btn").form.addEventListener("submit",(e) =>{ 
+  e.preventDefault()
+  addNewProject(e)
+  renderProjects(user.projects)
+})
 const form = document.querySelector("#submit-form")
 
 const renderRepos = (repos = user.repositories) => {
