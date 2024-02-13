@@ -24,6 +24,7 @@ user = {
     issues: 1,
     timestamp: new Date(2024, 0, 29, 22, 21, 43, 32),
     star: false,
+    pinned: false
   }, {
     id: 2,
     name: "how-many-days-until",
@@ -36,6 +37,7 @@ user = {
     issues: 0,
     timestamp: new Date(2024, 0, 13, 8, 55, 55, 0),
     star: false,
+    pinned: false
   }, {
     id: 3,
     name: "httriri",
@@ -48,6 +50,7 @@ user = {
     issues: 4,
     timestamp: new Date(2024, 1, 6, 17, 45, 9, 0),
     star: false,
+    pinned: false
   }, {
     id: 4,
     name: "ambition-fund-website",
@@ -61,6 +64,7 @@ user = {
     issues: 3,
     timestamp: new Date(2022, 1, 1, 2, 32, 1, 78),
     star: false,
+    pinned: false
   }
 ],
   projects: [
@@ -78,6 +82,16 @@ user = {
     id: 3,
     name:"Last Project",
     description: "If this doesn't work I quit."
+   },
+   {
+    id: 4,
+    name:"It's ok, it's fine",
+    description:"*deep breathing*"
+   },
+   {
+    id: 5,
+    name:"Console Log",
+    description:"successfully displayed console log messages"
    }
   ],
   packages: [{
@@ -118,48 +132,57 @@ user = {
   }],
 }
 
-const deleteMe =[{name:"To be changed later"}]
-
 //utility function
 const renderToDom = (divId, html) =>{
   const selectedDiv = document.querySelector(divId)
   selectedDiv.innerHTML = html
 }
 
+document.querySelector("#display-body").addEventListener("click", (e) => {
+  if (e.target.id.includes("delete")) {
+    const [,type,itemId] = e.target.id.split('--')
+    const itemIndex = user[type].findIndex(item => item.id === Number(itemId))
+    user[type].splice(itemIndex, 1)
+    if (type === "repositories") {
+      if (window.location.href.includes("repos.html")) {
+        renderRepos()
+      } else {
+        renderOverview()
+      }
+    } else if (type === "projects") {
+      renderProjects()
+    } else if (type === "packages") {
+      renderPackages()
+    }
+  }
+})
+
 //function to display projects "page"
-const renderProjects = (array) =>{
+const renderProjects = (array = user.projects) =>{
   let reference = ""
   array.forEach((element) => {
     reference += `<div id="display-body" class="card">
-    <div class="card-header">
-    Featured
-    </div>
     <div class="card-body">
-    <h5 class="card-title">${element.name}</h5>
-    <p class="card-text">${element.description}</p>
-    <a href="#" class="btn btn-primary delete-btn">Delete</a>
+      <h5 class="card-title">${element.name}</h5>
+      <p class="card-text">${element.description}</p>
+      <a class="btn btn-primary delete-btn" id="delete--projects--${element.id}">Delete</a>
     </div>
       </div>`
-  }) 
-  const projectCreator = () =>{
-    const display =
-    `<form id="submit-form">
-  <h5>Create a new Project</h5>
-    <input type="text" class="form-name" id="name" placeholder="Name" required>
-    <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
-    <button type="submit" class="btn submit-btn" id="submit-btn">Create</button>
-  </form>`
-  return display
-}  
-  renderToDom("#submit-form",projectCreator())
-  renderToDom("#display-body", reference)
-  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
-    e.preventDefault()
-    addNewProject(e)
-    renderProjects(user.projects)
-  })
+  })  
+renderToDom("#display-body", reference)
 }
 
+const projectCreator = () =>{
+  const display =
+  `<form id="submit-form">
+<h5>Create a new Project</h5>
+  <input type="text" class="form-name" id="name" placeholder="Name" required>
+  <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
+  <button type="submit" class="btn submit-btn" id="proj-submit-btn">Create</button>
+</form>`
+return display
+}  
+renderToDom("#submit-form",projectCreator())
 
 const projectNameInput = document.querySelector("#name");
 const projectDescriptionInput = document.querySelector("#description");
@@ -169,19 +192,17 @@ const addNewProject = (e) =>{
   const newProject ={
     name: document.querySelector("#name").value,
     description: document.querySelector("#description").value,
-    id: user.projects.length +1,
+    id: (user.projects.length > 0 ? user.projects[user.projects.length - 1].id + 1 : 1)
   }
   user.projects.push(newProject)
   renderProjects(user.projects)
-  form.reset()
-  document.querySelector("#submit-btn").form.addEventListener("submit",(e) =>{ 
-    e.preventDefault()
-    addNewProject(e)
-    renderProjects(user.projects)
-  })
-  
+  form.reset()  
 }
-
+document.querySelector("#proj-submit-btn").form.addEventListener("submit",(e) =>{ 
+  e.preventDefault()
+  addNewProject(e)
+  renderProjects(user.projects)
+})
 const form = document.querySelector("#submit-form")
 
 const renderRepos = (repos = user.repositories) => {
@@ -230,7 +251,7 @@ const repoForm = () => {
     e.preventDefault()
     formData = new FormData(e.target)
     const newRepo = {
-      id: user.repositories[user.repositories.length -1].id + 1,
+      id: (user.repositories.length > 0 ? user.repositories[user.repositories.length -1].id + 1 : 1),
       name: formData.get('name'),
       description: formData.get('description'),
       tags: formData.get('tags').toLowerCase().split(',').map(tag => tag.trim()),
@@ -241,6 +262,7 @@ const repoForm = () => {
       issues: 0,
       timestamp: new Date(),
       star: false,
+      pinned: false
     }
     user.repositories.push(newRepo)
     renderRepos()
@@ -250,25 +272,38 @@ const repoForm = () => {
 }
 
 //function for Overview display currently all placeholder 
-const renderOverview = (item) =>{
-    let reference = ""
-    item.forEach((item) =>{
-        reference += `<div id ="display-body" class="card">
-        <div class="card-header">
-  Pinned Repos
-    </div>
-<div class="card-body">
-<h5 class="card-title">${item.name}</h5>
-  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-  <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-    </div>`
-})
-renderToDom("#display-body", reference)
+const renderOverview = () => {
+  const pinnedRepos = user.repositories.filter(item => item.pinned)
+  if (pinnedRepos.length == 0) {
+    const noPinned = `<div>
+                        <p>No pinned repositories. Use form below to select repositories to pin.</p>
+                      </div>`
+    renderToDom("#display-body", noPinned)
+  } else {
+    renderRepos(pinnedRepos)
+  }
+  overviewForm()
+}
+
+const overviewForm = () => {
+  let formHTML = `<select id="add-pin" class="form-select" aria-label="Default select example">
+                      <option selected>Select repository to pin</option>`
+  user.repositories.forEach(item => {
+    if (!item.pinned) {formHTML += `<option value="${item.id}">${item.name}</option>`}
+  })
+  formHTML += `</select>
+              <button type="submit" class="btn btn-dark" id="submit-btn">Pin Repository</button>`
+  renderToDom("#submit-form", formHTML)
+  document.querySelector('#submit-form').addEventListener("submit", (e) => {
+    e.preventDefault()
+    const pinId = document.querySelector('#add-pin').value
+    user.repositories.map(item => {if (item.id === Number(pinId)) {item.pinned = true}})
+    renderOverview()
+  })
 }
 
 //function to display package cards on the packages page
-const renderPackages = (array) => {
+const renderPackages = (array = user.packages) => {
   let reference = ""
   array.forEach((element) => {
     reference += `<div class="card package-card" style="width: 18rem;">
@@ -287,7 +322,7 @@ const createPackage = (e) => {
   e.preventDefault();
 
   const newPackage = {
-    id: user.packages.length + 1,
+    id: (user.packages.length > 0 ? user.packages[user.packages.length - 1].id + 1 : 1),
     name: document.querySelector("#name-input").value,
     description: document.querySelector("#description-area").value,
     learnUrl: document.querySelector("#url-input").value
@@ -356,18 +391,37 @@ const renderNav = () => {
                           </div>
                         </div>
                       </nav>`
-renderToDom('#navbar-container', htmlString)
+  renderToDom('#navbar-container', htmlString)
+}
+
+const renderFooter = () =>{
+  const htmlData = `
+  <ul class="nav justify-content-center" >
+  © 2024 Deadly Exclusives
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Privacy</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Help</a>
+  </li>
+  <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/small-3391761-2825736.png" width="50" height="60" >
+  <li class="nav-item">
+    <a class="nav-link" href="#">Terms</a>
+  </li>
+  <li class="nav-item">
+  <a class="nav-link" href="#">About</a>
+  </li>
+</ul>`
+renderToDom ("#footer", htmlData)
 }
 
 const startUp = () => {
   renderUserSidebar(user)
   renderNav()
-  if (window.location.href.includes("index.html")) {
-    renderOverview(deleteMe)
-    document.querySelector("#overview-page").classList += "activePage"
-  } else if (window.location.href.includes("repos.html")) {
+  renderFooter()
+  if (window.location.href.includes("repos.html")) {
     renderRepos()
-    repoForm()    
+    repoForm()
     document.querySelector("#repos-page").classList += "activePage"
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
@@ -375,7 +429,10 @@ const startUp = () => {
   } else if (window.location.href.includes("packages.html")) {
     renderPackages(user.packages)
     document.querySelector("#submit-package-form").addEventListener("submit", createPackage)
-    document.querySelector("#packages-page").classList += "activePage"
+    document.querySelector("#packages-page").classList += "activePage"    
+  } else {
+    renderOverview()
+    document.querySelector("#overview-page").classList += "activePage"
   }
 }
 
