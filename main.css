@@ -165,7 +165,7 @@ footer {
   gap: 3px;
 }
 
-/*.activePage {
+.activePage {
   font-weight: bold;
   border-bottom: 3px solid white;
-}*/
+}
