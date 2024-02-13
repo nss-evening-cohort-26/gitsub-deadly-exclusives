@@ -1,5 +1,136 @@
+*, .card-header, ul, p, .card {
+  background: rgb(23, 23, 23) !important;
+  color: rgb(197, 197, 197)
+}
+
 body {
-  background: lime;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar, #display-body, #submit-form, #submit-package-form {
+  float: right;
+  width: 75%;
+} 
+
+#sidebar {
+  float: left;
+  width: 25%
+}
+
+footer {
+  clear: both;
+  width: 100%;
+}
+
+.card-img-top {
+  border-radius: 50%;
+  border: 1px solid rgb(86, 85, 85);
+  height: 250px;
+  width: 250px;
+  margin-top: 25px;
+}
+
+.navbar-nav a {
+  color:rgb(197, 197, 197);
+  padding: 15px 15px;
+}
+
+.navbar-nav a:hover {
+  color:rgb(239, 237, 237);
+  font-style: bold !important;
+}
+
+.nav-btn {
+  padding: 15px 25px;
+}
+
+.nav-link:activePage {
+  border-bottom: 2px solid rgb(208, 115, 84) !important;
+}
+
+#follow-btn, #sponsor-btn, #more-btn {
+  width: fit-content;
+  padding: 7px 10px;
+  background-color: rgb(51, 51, 51) !important;
+  border-radius: 10px;
+  border: none;
+  margin: 0 5px
+}
+
+#user-btn-container {
+  display: flex;
+  margin-left: 10px;
+}
+
+#social-info-container {
+  display: flex;
+  margin-left: 10px;
+}
+
+.contact-info {
+  margin-left: 12px
+}
+
+.card {
+  padding: 10px;
+}
+
+.social-info {
+  border: none;
+  margin: 0 5px;
+  padding: 7px 1px;
+}
+
+.repo-card-title {
+  color: rgb(79, 131, 204)
+}
+
+.delete-btn, .star-btn {
+  color: rgb(197, 197, 197);
+  width: 100px;
+  margin: 5px;
+}
+
+.delete-btn {
+  background-color: rgb(97, 3, 3) !important;
+  border-color: rgb(97, 3, 3);
+  width: 100px;
+}
+
+.star-btn {
+  background-color: rgb(51, 51, 51) !important;
+  border: none;
+}
+
+#display-body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+
+.package-card {
+  display: flex !important;
+  flex-direction: column;
+  border: 1px solid rgb(51, 51, 51);
+  margin: 5px;
+}
+
+.learn-more {
+  background-color: rgb(51, 51, 51) !important;
+  padding: 7px 12px;
+  color: rgb(197, 197, 197);
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.submit-btn {
+  background-color: rgb(22, 72, 22) !important;
+  border: none;
+  font-weight: bold;
+  color: whitesmoke
 }
 
 .repo-card, .tag-body, .repo-details {
@@ -10,6 +141,7 @@ body {
   background: rgb(24, 24, 24);
   color: rgb(67, 147, 250);
   flex-direction: row;
+  border-bottom: 1px solid rgb(47, 47, 47);
 }
 
 .repo-tag {

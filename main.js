@@ -1,5 +1,6 @@
 user = {
   name: "Harrison Buford",
+  username: "hbuford",
   profile: "profile-pic/harrison-buford.png",
   bio: "Building tech to elevate people. Always surprised.",
   followers: 523,
@@ -164,7 +165,7 @@ const renderProjects = (array = user.projects) =>{
     <div class="card-body">
       <h5 class="card-title">${element.name}</h5>
       <p class="card-text">${element.description}</p>
-      <a class="btn btn-primary" id="delete--projects--${element.id}">Delete</a>
+      <a class="btn btn-primary delete-btn" id="delete--projects--${element.id}">Delete</a>
     </div>
       </div>`
   })  
@@ -177,7 +178,7 @@ const projectCreator = () =>{
 <h5>Create a new Project</h5>
   <input type="text" class="form-name" id="name" placeholder="Name" required>
   <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
-  <button type="submit" class="btn" id="proj-submit-btn">Create</button>
+  <button type="submit" class="btn submit-btn" id="proj-submit-btn">Create</button>
 </form>`
 return display
 }  
@@ -210,7 +211,7 @@ const renderRepos = (repos = user.repositories) => {
     htmlString += `<div class="card repo-card">
                     <div class="repo-left">
                       <div class="card-body">
-                        <h5 class="card-title">${repo.name}</h5>
+                        <h5 class="repo-card-title">${repo.name}</h5>
                         <p class="card-text">${repo.description}</p>
                         <div class="tag-body">`
                           repo.tags.map(tag => {htmlString += `<div class="repo-tag">${tag}</div>`})
@@ -228,8 +229,8 @@ const renderRepos = (repos = user.repositories) => {
                       </div>
                     </div>
                     <div class="repo-right">
-                      <button class="btn btn-outline-light" id="star--repositories--${repo.id}">Star</button>
-                      <button class="btn btn-outline-light" id="delete--repositories--${repo.id}">Delete</button>
+                      <button class="btn btn-outline-light star-btn" id="star--repositories--${repo.id}">Star</button>
+                      <button class="btn btn-outline-light delete-btn" id="delete--repositories--${repo.id}">Delete</button>
                     </div>
                   </div>`
   })
@@ -244,7 +245,7 @@ const repoForm = () => {
                       <p>Add tags separated by commas (',')</p>
                       <input type="text" name="language" placeholder="Primary Language (JavaScript, TypeScript, etc.)" required>
                       <input type="text" name="license" placeholder="License">
-                      <button type="submit" class="btn" id="submit-btn">Create Repository</button>`
+                      <button type="submit" class="btn submit-btn" id="submit-btn">Create Repository</button>`
   renderToDom("#submit-form", formDisplay)
   document.querySelector("#submit-form").addEventListener("submit", (e) => {
     e.preventDefault()
@@ -305,11 +306,11 @@ const overviewForm = () => {
 const renderPackages = (array = user.packages) => {
   let reference = ""
   array.forEach((element) => {
-    reference += `<div class="card" style="width: 18rem;">
+    reference += `<div class="card package-card" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">${element.name}</h5>
       <p class="card-text">${element.description}</p>
-      <a href="${element.learnUrl}" class="card-link">Learn More</a>
+      <a href="${element.learnUrl}" class="card-link learn-more">Learn More</a>
     </div>
   </div>`
   });
@@ -337,17 +338,23 @@ const renderUserSidebar = (object) => {
 <img src="${object.profile}" class="card-img-top" alt="...">
 <div class="card-body">
   <h5 class="card-title">${object.name}</h5>
+  <p id="username"></p>${object.username}</p>
   <p class="card-text">${object.bio}</p>
 </div>
+<div id="user-btn-container">
 <button id="follow-btn">Follow</button>
 <button id="sponsor-btn">Sponsor</button>
-<p>${object.followers} followers</p>
-<p>${object.following} following</p>
-<p>${object.favorites.length}</p>
-<p>${object.location}</p>
-<p>${object.email}</p>
-<p>${object.website}</p>
-<p>${object.twitter}</p>
+<button id="more-btn">...</button>
+</div>
+<div id="social-info-container">
+<p class="social-info">${object.followers} followers</p>
+<p class="social-info">${object.following} following</p>
+<p class="social-info">${object.favorites.length}</p>
+</div>
+<p class="contact-info">${object.location}</p>
+<p class="contact-info">${object.email}</p>
+<p class="contact-info">${object.website}</p>
+<p class="contact-info">${object.twitter}</p>
 <ul class="list-group list-group-flush">
   <li class="list-group-item">
     <h5>Highlights</h5>
@@ -376,10 +383,10 @@ const renderNav = () => {
                           </button>
                           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div class="navbar-nav">
-                              <a id="overview-page" class="nav-link" aria-current="page" href="index.html">Overview</a>
-                              <a id="repos-page" class="nav-link" href="repos.html">Repositories</a>
-                              <a id="projects-page" class="nav-link" href="projects.html">Projects</a>
-                              <a id="packages-page" class="nav-link" href="packages.html">Packages</a>
+                              <div class="nav-btn"><a id="overview-page" class="nav-link" aria-current="page" href="index.html">Overview</a></div>
+                              <div class="nav-btn"><a id="repos-page" class="nav-link" href="repos.html">Repositories</a></div>
+                              <div class="nav-btn"><a id="projects-page" class="nav-link" href="projects.html">Projects</a></div>
+                              <div class="nav-btn"><a id="packages-page" class="nav-link" href="packages.html">Packages</a></div>
                             </div>
                           </div>
                         </div>
