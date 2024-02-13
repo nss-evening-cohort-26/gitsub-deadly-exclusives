@@ -137,7 +137,7 @@ const renderProjects = (array) =>{
     <div class="card-body">
     <h5 class="card-title">${element.name}</h5>
     <p class="card-text">${element.description}</p>
-    <a href="#" class="btn btn-primary">Delete</a>
+    <a href="#" class="btn btn-primary delete-btn">Delete</a>
     </div>
       </div>`
   }) 
@@ -147,7 +147,7 @@ const renderProjects = (array) =>{
   <h5>Create a new Project</h5>
     <input type="text" class="form-name" id="name" placeholder="Name" required>
     <input type ="text" class="form-description" id="description" id="description" placeholder="Description">
-    <button type="submit" class="btn" id="submit-btn">Create</button>
+    <button type="submit" class="btn submit-btn" id="submit-btn">Create</button>
   </form>`
   return display
 }  
@@ -208,8 +208,8 @@ const renderRepos = (repos = user.repositories) => {
                       </div>
                     </div>
                     <div class="repo-right">
-                      <button class="btn btn-outline-light" id="star--repositories--${repo.id}">Star</button>
-                      <button class="btn btn-outline-light" id="delete--repositories--${repo.id}">Delete</button>
+                      <button class="btn btn-outline-light star-btn" id="star--repositories--${repo.id}">Star</button>
+                      <button class="btn btn-outline-light delete-btn" id="delete--repositories--${repo.id}">Delete</button>
                     </div>
                   </div>`
   })
@@ -224,7 +224,7 @@ const repoForm = () => {
                       <p>Add tags separated by commas (',')</p>
                       <input type="text" name="language" placeholder="Primary Language (JavaScript, TypeScript, etc.)" required>
                       <input type="text" name="license" placeholder="License">
-                      <button type="submit" class="btn" id="submit-btn">Create Repository</button>`
+                      <button type="submit" class="btn submit-btn" id="submit-btn">Create Repository</button>`
   renderToDom("#submit-form", formDisplay)
   document.querySelector("#submit-form").addEventListener("submit", (e) => {
     e.preventDefault()
@@ -271,11 +271,11 @@ renderToDom("#display-body", reference)
 const renderPackages = (array) => {
   let reference = ""
   array.forEach((element) => {
-    reference += `<div class="card" style="width: 18rem;">
+    reference += `<div class="card package-card" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">${element.name}</h5>
       <p class="card-text">${element.description}</p>
-      <a href="${element.learnUrl}" class="card-link">Learn More</a>
+      <a href="${element.learnUrl}" class="card-link learn-more">Learn More</a>
     </div>
   </div>`
   });
