@@ -182,7 +182,7 @@ const projectCreator = () =>{
 </form>`
 return display
 }  
-renderToDom("#submit-form",projectCreator())
+
 
 const projectNameInput = document.querySelector("#name");
 const projectDescriptionInput = document.querySelector("#description");
@@ -198,11 +198,7 @@ const addNewProject = (e) =>{
   renderProjects(user.projects)
   form.reset()  
 }
-document.querySelector("#proj-submit-btn").form.addEventListener("submit",(e) =>{ 
-  e.preventDefault()
-  addNewProject(e)
-  renderProjects(user.projects)
-})
+
 const form = document.querySelector("#submit-form")
 
 const renderRepos = (repos = user.repositories) => {
@@ -286,7 +282,7 @@ const renderOverview = () => {
 }
 
 const overviewForm = () => {
-  let formHTML = `<select id="add-pin" class="form-select" aria-label="Default select example">
+  let formHTML = `<select id="add-pin" class="form-select lightertext" aria-label="Default select example">
                       <option selected>Select repository to pin</option>`
   user.repositories.forEach(item => {
     if (!item.pinned) {formHTML += `<option value="${item.id}">${item.name}</option>`}
@@ -426,6 +422,11 @@ const startUp = () => {
   } else if (window.location.href.includes("projects.html")) {
     renderProjects(user.projects)
     document.querySelector("#projects-page").classList += "activePage"
+    renderToDom("#submit-form",projectCreator())
+    document.querySelector("#proj-submit-btn").form.addEventListener("submit",(e) =>{ 
+      addNewProject(e)
+      renderProjects(user.projects)
+    })    
   } else if (window.location.href.includes("packages.html")) {
     renderPackages(user.packages)
     document.querySelector("#submit-package-form").addEventListener("submit", createPackage)

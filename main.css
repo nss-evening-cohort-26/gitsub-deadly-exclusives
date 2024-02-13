@@ -146,7 +146,7 @@ footer {
 
 .repo-tag {
   padding: 0.5rem 1rem;
-  background: rgb(63, 63, 99);
+  background: rgb(63, 63, 99) !important;
   border-radius: 1rem;
   margin: 1px;
 }
@@ -168,4 +168,8 @@ footer {
 .activePage {
   font-weight: bold;
   border-bottom: 3px solid white;
+}
+
+.lightertext {
+  color: lightgray !important;
 }
